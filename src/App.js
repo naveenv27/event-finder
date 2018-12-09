@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import $ from "jquery";
 import "./App.css";
 
