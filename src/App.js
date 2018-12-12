@@ -12,23 +12,22 @@ import "./App.css";
 const genres = [
   { label: "Sports", value: "sports" },
   { label: "Music", value: "music" },
-  { label: "Arts & Theatre", value: "arts %26 theatre" },
+  { label: "Arts & Theatre", value: "arts %26 theatre" }
 ];
 
-const monthMap =
-{
-  'Jan': '01',
-  'Feb': '02',
-  'Mar': '03',
-  'Apr': '04',
-  'May': '05',
-  'Jun': '06',
-  'Jul': '07',
-  'Aug': '08',
-  'Sep': '09',
-  'Oct': '10',
-  'Nov': '11',
-  'Dec': '12'
+const monthMap = {
+  Jan: "01",
+  Feb: "02",
+  Mar: "03",
+  Apr: "04",
+  May: "05",
+  Jun: "06",
+  Jul: "07",
+  Aug: "08",
+  Sep: "09",
+  Oct: "10",
+  Nov: "11",
+  Dec: "12"
 };
 
 class App extends Component {
@@ -42,16 +41,17 @@ class App extends Component {
         selection: {
           startDate: new Date(),
           endDate: null,
-          key: 'selection',
-        },
+          key: "selection"
+        }
       },
-      dateRangePicker: { // represents the dates selected
+      dateRangePicker: {
+        // represents the dates selected
         selection: {
           startDate: new Date(),
           endDate: addDays(new Date(), 7),
-          key: 'selection',
-        },
-      },
+          key: "selection"
+        }
+      }
     };
   }
 // 'https://app.ticketmaster.com/discovery/v2/events.json?classificationName=' + {genrePicked} + '&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=' + {rangeStart} + '&endDateTime=' + {rangeEnd}
@@ -88,14 +88,22 @@ class App extends Component {
     this.setState({
       [which]: {
         ...this.state[which],
-        ...payload,
+        ...payload
       },
-      rangeStart: payload.selection.startDate.toString().substring(11, 15)
-        + '-' + monthMap[payload.selection.startDate.toString().substring(4, 7)] + '-'
-        + payload.selection.startDate.toString().substring(8, 10) + 'T00:00:01Z',
-      rangeEnd: payload.selection.endDate.toString().substring(11, 15)
-        + '-' + monthMap[payload.selection.endDate.toString().substring(4, 7)] + '-'
-        + payload.selection.endDate.toString().substring(8, 10) + 'T23:59:59Z',
+      rangeStart:
+        payload.selection.startDate.toString().substring(11, 15) +
+        "-" +
+        monthMap[payload.selection.startDate.toString().substring(4, 7)] +
+        "-" +
+        payload.selection.startDate.toString().substring(8, 10) +
+        "T00:00:01Z",
+      rangeEnd:
+        payload.selection.endDate.toString().substring(11, 15) +
+        "-" +
+        monthMap[payload.selection.endDate.toString().substring(4, 7)] +
+        "-" +
+        payload.selection.endDate.toString().substring(8, 10) +
+        "T23:59:59Z"
     });
   }
 
@@ -116,10 +124,10 @@ class App extends Component {
         <div className="dateRange">
         <h2>Date Range</h2>
           <DateRangePicker
-            onChange={this.handleRangeChange.bind(this, 'dateRangePicker')}
+            onChange={this.handleRangeChange.bind(this, "dateRangePicker")}
             showSelectionPreview={true}
             moveRangeOnFirstSelection={false}
-            className={'PreviewArea'}
+            className={"PreviewArea"}
             months={2}
             ranges={[this.state.dateRangePicker.selection]}
             direction="horizontal"
