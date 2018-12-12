@@ -4,37 +4,40 @@ import { DateRangePicker } from 'react-date-range';
 import { addDays } from 'date-fns';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import Select from 'react-select';
 import "./App.css";
 
+//`https://app.ticketmaster.com/discovery/v2/events.json?classificationName=sports&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z`,
+
 const genres = [
-  {label: "Sports", value: "sports"},
-  {label: "Music", value: "music"},
-  {label: "Arts & Theatre", value: "arts %26 theatre"},
+  { label: "Sports", value: "sports" },
+  { label: "Music", value: "music" },
+  { label: "Arts & Theatre", value: "arts %26 theatre" },
 ];
 
 const monthMap =
 {
-  'Jan' : '01',
-  'Feb' : '02',
-  'Mar' : '03',
-  'Apr' : '04',
-  'May' : '05',
-  'Jun' : '06',
-  'Jul' : '07',
-  'Aug' : '08',
-  'Sep' : '09',
-  'Oct' : '10',
-  'Nov' : '11',
-  'Dec' : '12'
+  'Jan': '01',
+  'Feb': '02',
+  'Mar': '03',
+  'Apr': '04',
+  'May': '05',
+  'Jun': '06',
+  'Jul': '07',
+  'Aug': '08',
+  'Sep': '09',
+  'Oct': '10',
+  'Nov': '11',
+  'Dec': '12'
 };
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      genrePicked: "",
-      rangeStart: '2018-12-12T00:00:01Z',
-      rangeEnd: '2018-12-19T23:59:59Z',
+      genrePicked: "sports",
+      rangeStart: '2018-12-12T00:00:01',
+      rangeEnd: '2018-12-19T23:59:59',
       dateRange: { // represents the potential dates
         selection: {
           startDate: new Date(),
@@ -51,10 +54,10 @@ class App extends Component {
       },
     };
   }
-
+// 'https://app.ticketmaster.com/discovery/v2/events.json?classificationName=' + {genrePicked} + '&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=' + {rangeStart} + '&endDateTime=' + {rangeEnd}
   componentDidMount() {
     $.ajax({
-      url: `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=sports&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z`,
+      url: "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z",
       type: "GET",
       async: true,
       dataType: "json",
@@ -65,7 +68,8 @@ class App extends Component {
         events.forEach(event => {
           var info = {
             name: event.name,
-            url: event.url
+            url: event.url,
+            location: event._embedded.venues.name
           };
           eventInfoArray.push(info);
         });
@@ -95,17 +99,22 @@ class App extends Component {
     });
   }
 
+  updateGenre = (genrePicked) => {
+    this.setState({ genrePicked });
+  }
+
 
   render() {
-    var { searching, eventResult } = this.state;
+    var { searching, eventResult, genrePicked } = this.state;
 
     if (!searching) {
-      return <div>Loading...</div>;
+      return <div className = "App-logo">Loading...</div>;
     }
 
     return (
       <div className="App">
         <div className="dateRange">
+        <h2>Date Range</h2>
           <DateRangePicker
             onChange={this.handleRangeChange.bind(this, 'dateRangePicker')}
             showSelectionPreview={true}
@@ -116,13 +125,23 @@ class App extends Component {
             direction="horizontal"
           />
         </div>
+        <div className="genreSelection">
+        <h2>Specify Event Genre</h2>
+          <Select
+            value={genrePicked}
+            onChange={this.updateGenre}
+            options={genres}
+            placeholder="All Genres Included"
+          />
+        </div>
         <ul>
+          <h2>Recommended Events</h2>
           {eventResult.map(item => (
             <li key="{item.name}">
-              Name: {item.name} | URL: {item.url}
+              Name: {item.name} | Location: {item.location}
             </li>
           ))}
-        </ul>
+        </ul>        
       </div>
     );
   }
