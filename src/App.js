@@ -35,9 +35,9 @@ class App extends Component {
     super(props);
     this.state = {
       city: "Chicago",
-      genrePicked: "sports",
-      rangeStart: "2018-12-12T00:00:01",
-      rangeEnd: "2018-12-19T23:59:59",
+      genrePicked: "music",
+      rangeStart: "2018-12-12T00:00:01Z",
+      rangeEnd: "2018-12-19T23:59:59Z",
       dateRange: {
         // represents the potential dates
         selection: {
@@ -63,9 +63,11 @@ class App extends Component {
 
   getEventResults() {
     $.ajax({
-      url: `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=${
-        this.state.city
-      }&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z`,
+      url: `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=${
+        this.state.genrePicked
+      }&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=&startDateTime=${
+        this.state.rangeStart
+      }&endDateTime=${this.state.rangeEnd}`,
       type: "GET",
       async: true,
       dataType: "json",
@@ -119,7 +121,8 @@ class App extends Component {
   };
 
   handleClick() {
-    this.setState({ eventResult: this.eventResult.splice(-1, 1) });
+    //this.getEventResults();
+    //this.setState({ eventResult: this.eventResult.splice(-1, 1) });
   }
 
   render() {
