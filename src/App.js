@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import $ from "jquery";
-import { DateRangePicker } from 'react-date-range';
-import { addDays } from 'date-fns';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import Select from 'react-select';
+import { DateRangePicker } from "react-date-range";
+import { addDays } from "date-fns";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import Select from "react-select";
 import "./App.css";
 
 //`https://app.ticketmaster.com/discovery/v2/events.json?classificationName=sports&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z`,
@@ -34,10 +34,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      city: "Chicago",
       genrePicked: "sports",
-      rangeStart: '2018-12-12T00:00:01',
-      rangeEnd: '2018-12-19T23:59:59',
-      dateRange: { // represents the potential dates
+      rangeStart: "2018-12-12T00:00:01",
+      rangeEnd: "2018-12-19T23:59:59",
+      dateRange: {
+        // represents the potential dates
         selection: {
           startDate: new Date(),
           endDate: null,
@@ -56,8 +58,14 @@ class App extends Component {
   }
   // 'https://app.ticketmaster.com/discovery/v2/events.json?classificationName=' + {genrePicked} + '&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=' + {rangeStart} + '&endDateTime=' + {rangeEnd}
   componentDidMount() {
+    this.getEventResults();
+  }
+
+  getEventResults() {
     $.ajax({
-      url: "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=Nashville&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z",
+      url: `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=&apikey=B0Vm1oHgzSTL44eTNbyGpT6YsFv5kiLQ&city=${
+        this.state.city
+      }&startDateTime=2018-12-10T00:00:01Z&endDateTime=2018-12-14T23:59:59Z`,
       type: "GET",
       async: true,
       dataType: "json",
@@ -83,7 +91,6 @@ class App extends Component {
       }
     });
   }
-
   handleRangeChange(which, payload) {
     this.setState({
       [which]: {
@@ -107,14 +114,13 @@ class App extends Component {
     });
   }
 
-  updateGenre = (genrePicked) => {
+  updateGenre = genrePicked => {
     this.setState({ genrePicked });
-  }
+  };
 
   handleClick() {
-    this.setState({ eventResult : this.eventResult.splice(-1,1)});
+    this.setState({ eventResult: this.eventResult.splice(-1, 1) });
   }
-
 
   render() {
     var { searching, eventResult, genrePicked } = this.state;
@@ -145,16 +151,15 @@ class App extends Component {
             options={genres}
             placeholder="All Genres Included"
           />
-          <br></br>          
-          <button onClick={this.handleClick}>
-            Find Event Suggestions
-          </button>
-          <br></br>
+          <br />
+          <button onClick={this.handleClick}>Find Event Suggestions</button>
+          <br />
           <h2>Event Recommendations</h2>
           <ul>
             {eventResult.map(item => (
               <li key="{item.name}">
-                Name: {item.name} <br></br>URL: {item.url}
+                Name: {item.name} <br />
+                URL: {item.url}
               </li>
             ))}
           </ul>
