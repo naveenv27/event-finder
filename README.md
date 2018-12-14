@@ -1,3 +1,9 @@
+## About this application
+
+Nashville Live is a web application designed to assist both tourists and locals in planning an exciting weekend in the lively city of Nashville. With a sleek, simple design and intuitive user interface, this application makes it easy to search through all the events in the city to find exactly what you are looking for. All the user needs to do is provide a range of dates to see all possible events in Nashville during that time frame which will be rendered from the Ticketmaster API which is utilized through most of the backend. Additionally, the user can input what type or types of events they are interested in to further optimize their search results.Nashville Live helps you spend less time searching for events and more time enjoying them.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
